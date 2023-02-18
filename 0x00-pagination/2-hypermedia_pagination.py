@@ -62,6 +62,15 @@ class Server:
         return data
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
+        """returns all necessary key value pairs for pagination
+
+        Args:
+            page (int, optional): page index. Defaults to 1.
+            page_size (int, optional): number of items in page. Defaults to 10.
+
+        Returns:
+            dict: dictionary of pagination attributes
+        """
         data = self.get_page(page, page_size)
         dataset_length = len(self.dataset())
 
@@ -77,7 +86,7 @@ class Server:
         return {
             'page_size': page_size,
             'page': page,
-            'data': len(data),
+            'data': data,
             'next_page': next_page,
             'prev_page': prev_page,
             'total_pages': total_pages
