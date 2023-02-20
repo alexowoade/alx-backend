@@ -58,8 +58,7 @@ class Server:
         gap = 0
 
         for idx in range(index, max_index):
-            start_data = self.indexed_dataset().get(idx)
-            if start_data:
+            if self.indexed_dataset().get(idx):
                 break
             gap += 1
 
