@@ -62,7 +62,7 @@ class Server:
                 break
             gap += 1
 
-        next_index = index + page_size + gap
+        next_index = idx + page_size
         data = self.dataset()[idx:next_index]
 
         return {
