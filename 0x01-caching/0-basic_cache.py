@@ -10,9 +10,6 @@ class BasicCache(BaseCaching):
         BaseCaching (class): Parent cache class
     """
 
-    def __init__(self):
-        super().__init__()
-
     def put(self, key, item):
         """add data to cache_data
 
