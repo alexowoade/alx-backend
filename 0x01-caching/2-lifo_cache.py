@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """LIFO caching"""
 from base_caching import BaseCaching
-from functools import wraps
 
 
 class LIFOCache(BaseCaching):
