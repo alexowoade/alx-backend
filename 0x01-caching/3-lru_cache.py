@@ -48,10 +48,8 @@ class LRUCache(BaseCaching):
         Returns:
             str: value if successful else None
         """
-        if key not in self.cache_data.keys():
-            return None
-
-        self.stack.append(key)
-        self.stack.remove(key)
+        if key in self.cache_data.keys():
+            self.stack.append(key)
+            self.stack.remove(key)
 
         return self.cache_data.get(key)
