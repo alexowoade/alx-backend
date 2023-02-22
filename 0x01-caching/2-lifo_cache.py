@@ -23,10 +23,7 @@ class LIFOCache(BaseCaching):
         if not key or not item:
             return
 
-        if key in self.cache_data.keys():
-            updated = True
-        else:
-            updated = False
+        updated = True if key in self.cache_data.keys() else False
 
         self.cache_data[key] = item
 
