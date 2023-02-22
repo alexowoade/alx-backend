@@ -31,9 +31,7 @@ class LRUCache(BaseCaching):
         self.stack.append(key)
 
         if updated:
-            self.updated_key = key
-            first_index_of_key = self.stack.index(key)
-            del self.stack[first_index_of_key]
+            self.stack.remove(key)
             return
 
         if len(self.cache_data) > self.MAX_ITEMS:
@@ -54,7 +52,6 @@ class LRUCache(BaseCaching):
             return None
 
         self.stack.append(key)
-        first_index_of_key = self.stack.index(key)
-        del self.stack[first_index_of_key]
+        self.stack.remove(key)
 
         return self.cache_data.get(key)
