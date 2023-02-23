@@ -1,96 +1,55 @@
-#!/usr/bin/env python3
-"""LFU caching"""
-from base_caching import BaseCaching
-from collections import OrderedDict
+#!/usr/bin/python3
+"""LFU Cache Replacement Implementation Class
+"""
+from threading import RLock
+
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """define LFUCache class
+    """
+    An implementaion of LFUCache(Least frequently used)
 
-    Args:
-        BaseCaching (obj): parent cache class
+    Attributes:
+        __stats (list): A dictionary of cache keys for access count
+        __rlock (RLock): Lock accessed resources to prevent race condition
     """
 
     def __init__(self):
+        """ Instantiation method, sets instance attributes
+        """
         super().__init__()
-        self.frequency_tracker = OrderedDict()
-        self.lru_stack = []
-        self.max_frequency = 0
+        self.__stats = {}
+        self.__rlock = RLock()
 
     def put(self, key, item):
-        """_summary_
-
-        Args:
-            key (_type_): _description_
-            item (_type_): _description_
+        """ Add an item in the cache
         """
-        if not key or not item:
-            return
-
-        updated = True if key in self.cache_data.keys() else False
-
-        self.cache_data[key] = item
-        self.frequency_tracker[key] = self.frequency_tracker.get(key, 0) + 1
-
-        if self.frequency_tracker[key] > self.max_frequency:
-            self.max_frequency = self.frequency_tracker[key]
-
-        if not updated:
-            self.lru_stack.append(key)
-        else:
-            if self.frequency_tracker[key] == self.max_frequency:
-                self.lru_stack.remove(key)
-
-            print(self.frequency_tracker, '   ', self.lru_stack)
-            if not self.lru_stack:
-                self.lru_stack = list(self.frequency_tracker.keys())
-            return
-
-        if len(self.cache_data) > self.MAX_ITEMS:
-            if self.lru_stack:
-                del self.cache_data[self.lru_stack[0]]
-                print(f'DISCARD: {self.lru_stack[0]}')
-                del self.frequency_tracker[self.lru_stack[0]]
-                del self.lru_stack[0]
-
-                print(self.frequency_tracker, '   ', self.lru_stack)
-                return
-
-            print('\n\n')
-            first_key = next(iter(self.frequency_tracker.keys()))
-            del self.cache_data[first_key]
-            print(f'DISCARD: {first_key}')
-            del self.frequency_tracker[first_key]
-
-            print(self.frequency_tracker, '   ', self.lru_stack)
+        if key is not None and item is not None:
+            keyOut = self._balance(key)
+            with self.__rlock:
+                self.cache_data.update({key: item})
+            if keyOut is not None:
+                print('DISCARD: {}'.format(keyOut))
 
     def get(self, key):
-        """_summary_
-
-        Args:
-            key (_type_): _description_
-
-        Returns:
-            _type_: _description_
+        """ Get an item by key
         """
-        if key not in self.cache_data.keys():
-            return None
+        with self.__rlock:
+            value = self.cache_data.get(key, None)
+            if key in self.__stats:
+                self.__stats[key] += 1
+        return value
 
-        self.frequency_tracker[key] = self.frequency_tracker.get(key, 0) + 1
-
-        if self.frequency_tracker[key] > self.max_frequency:
-            self.max_frequency = self.frequency_tracker[key]
-
-        if key in self.lru_stack:
-            self.lru_stack.remove(key)
-            if self.frequency_tracker[key] < self.max_frequency:
-                self.lru_stack.append(key)
-
-        print(self.frequency_tracker, '   ', self.lru_stack)
-
-        if not self.lru_stack:
-            self.lru_stack = list(self.frequency_tracker.keys())
-        return self.cache_data.get(key)
-
-
-# lru = min(self.cache_monitor, key=self.cache_monitor.get)
+    def _balance(self, keyIn):
+        """ Removes the earliest item from the cache at MAX size
+        """
+        keyOut = None
+        with self.__rlock:
+            if keyIn not in self.__stats:
+                if len(self.cache_data) == BaseCaching.MAX_ITEMS:
+                    keyOut = min(self.__stats, key=self.__stats.get)
+                    self.cache_data.pop(keyOut)
+                    self.__stats.pop(keyOut)
+            self.__stats[keyIn] = self.__stats.get(keyIn, 0) + 1
+        return keyOut
