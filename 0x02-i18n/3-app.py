@@ -23,7 +23,7 @@ babel = Babel(app)
 
 
 @app.route('/')
-def index() -> str:
+def index():
     """view function for root route
 
     Returns:
@@ -33,7 +33,7 @@ def index() -> str:
 
 
 @babel.localeselector
-def get_locale() -> str:
+def get_locale():
     """get best language match
 
     Returns:
