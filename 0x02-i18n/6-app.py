@@ -32,7 +32,7 @@ def index():
     Returns:
         html: homepage
     """
-    return render_template('5-index.html')
+    return render_template('6-index.html')
 
 
 @babel.localeselector
