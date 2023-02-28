@@ -28,7 +28,7 @@ def index():
     return render_template('3-index.html')
 
 
-@babel.localeselector
+# @babel.localeselector
 def get_locale():
     """get best language match
 
@@ -42,7 +42,7 @@ def get_locale():
 
 
 # --- uncomment this line
-# babel.init_app(app, locale_selector=get_locale)
+babel.init_app(app, locale_selector=get_locale)
 # --- and comment the @babel.localeselector decorator above if
 # you get this error:
 # AttributeError: 'Babel' object has no attribute 'localeselector'
