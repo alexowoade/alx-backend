@@ -22,8 +22,8 @@ babel = Babel(app)
 # babel.init_app(app, locale_selector=get_locale)
 
 
-@app.route('/', methods=['GET'], strict_slashes=False)
-def index():
+@app.route('/')
+def index() -> str:
     """view function for root route
 
     Returns:
@@ -33,7 +33,7 @@ def index():
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """get best language match
 
     Returns:
