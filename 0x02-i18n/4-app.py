@@ -17,10 +17,6 @@ app = Flask(__name__)
 app.config.from_object(Config)
 babel = Babel(app)
 
-# use this below instead of @babel.localeselector /
-# for modern versions of babel
-# babel.init_app(app, locale_selector=get_locale)
-
 
 @app.route('/')
 def index():
@@ -29,7 +25,7 @@ def index():
     Returns:
         html: homepage
     """
-    return render_template('4-index.html')
+    return render_template('3-index.html')
 
 
 @babel.localeselector
@@ -39,11 +35,17 @@ def get_locale():
     Returns:
         str: best match
     """
-    locale = request.args.get("locale")
-    if locale and locale in app.config['LANGUAGES']:
+    locale = request.args.get('locale')
+    if locale in app.config['LANGUAGES']:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
+
+# --- uncomment this line
+# babel.init_app(app, locale_selector=get_locale)
+# --- and comment the @babel.localeselector decorator above if
+# you get this error:
+# AttributeError: 'Babel' object has no attribute 'localeselector'
 
 if __name__ == '__main__':
     app.run()
