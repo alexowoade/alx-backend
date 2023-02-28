@@ -22,7 +22,7 @@ babel = Babel(app)
 # babel.init_app(app, locale_selector=get_locale)
 
 
-@app.route('/')
+@app.route('/', strict_slashes=False)
 def index():
     """view function for root route
 
