@@ -1,34 +1,46 @@
 #!/usr/bin/env python3
-""" Module for trying out Babel i18n """
-from flask_babel import Babel, _
-from flask import Flask, render_template, request, flash
-
-app = Flask(__name__, template_folder='templates')
-babel = Babel(app)
+"""Basic Babel Setup"""
+from flask import Flask, render_template, request
+from flask_babel import Babel
 
 
-class Config(object):
-    """ Configuration Class for Babel """
-
+class Config:
+    """Config class for flask app
+    """
+    DEBUG = True
     LANGUAGES = ['en', 'fr']
     BABEL_DEFAULT_LOCALE = 'en'
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
+app = Flask(__name__)
 app.config.from_object(Config)
+babel = Babel(app)
+
+# use this below instead of @babel.localeselector /
+# for modern versions of babel
+# babel.init_app(app, locale_selector=get_locale)
 
 
-@app.route('/', methods=['GET'], strict_slashes=False)
-def hello_world() -> str:
-    """Renders a Basic Template for Babel Implementation"""
-    return render_template("3-index.html")
+@app.route('/')
+def index():
+    """view function for root route
+
+    Returns:
+        html: homepage
+    """
+    return render_template('3-index.html')
 
 
 @babel.localeselector
-def get_locale() -> str:
-    """Select a language translation to use for that request"""
+def get_locale():
+    """get best language match
+
+    Returns:
+        str: best match
+    """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()
