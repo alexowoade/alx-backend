@@ -1,12 +1,3 @@
-
-Breadcrumbsalx-backend/0x01-caching
-/4-mru_cache.py
-File metadata and controls
-
-Code
-
-Blame
-class MRUCache(BaseCaching):
 #!/usr/bin/env python3
 """MRU caching"""
 from base_caching import BaseCaching

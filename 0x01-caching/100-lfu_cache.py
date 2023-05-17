@@ -1,11 +1,3 @@
-
-Breadcrumbsalx-backend/0x01-caching
-/100-lfu_cache.py
-File metadata and controls
-
-Code
-
-Blame
 #!/usr/bin/python3
 """LFU Cache Replacement Implementation Class
 """

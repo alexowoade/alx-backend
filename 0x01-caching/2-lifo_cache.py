@@ -1,12 +1,3 @@
-
-Breadcrumbsalx-backend/0x01-caching
-/2-lifo_cache.py
-File metadata and controls
-
-Code
-
-Blame
-class LIFOCache(BaseCaching):
 #!/usr/bin/env python3
 """LIFO caching"""
 from base_caching import BaseCaching

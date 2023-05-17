@@ -1,11 +1,3 @@
-Breadcrumbsalx-backend/0x01-caching
-/0-basic_cache.py
-File metadata and controls
-
-Code
-
-Blame
-class BasicCache(BaseCaching):
 #!/usr/bin/env python3
 """Python Caching"""
 from base_caching import BaseCaching

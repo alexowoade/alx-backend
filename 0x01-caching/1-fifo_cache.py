@@ -1,12 +1,3 @@
-
-Breadcrumbsalx-backend/0x01-caching
-/1-fifo_cache.py
-File metadata and controls
-
-Code
-
-Blame
-class FIFOCache(BaseCaching):
 #!/usr/bin/env python3
 """FIFO caching"""
 from base_caching import BaseCaching
